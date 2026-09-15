@@ -11,7 +11,7 @@ void setup(){
   while (!Serial) {}
   
   Wire.begin();
-  Wire.setClock(400000); //Velocidade I2C de 400kHz
+  Wire.setClock(100000); //Velocidade I2C de 400kHz
   
   if(!pres.Begin()){
     Serial.println("Erro ao inicializar o sensor MS4525DO!");
@@ -22,9 +22,7 @@ void setup(){
 
 void loop(){
   if(pres.Read()){
-    float pressao_psi = pres.pres_pa(); 
-    
-    float pressao_pa = pressao_psi * 6894.757f; //Converte psi para pascal
+    float pressao_pa = pres.pres_pa(); 
 
     //Normalização
     if(pressao_pa < 0){ 
@@ -40,13 +38,11 @@ void loop(){
     // Exibição dos dados no Monitor Serial
     Serial.print("Pressao: ");
     Serial.print(pressao_pa, 2);
-    Serial.print(" Pa | ");
+    Serial.println(" Pa | ");
     
     Serial.print("Velocidade: ");
     Serial.print(velocidade_ms, 2);
-    Serial.print(" m/s (");
-    Serial.print(velocidade_kmh, 1);
-    Serial.print(" km/h) | ");
+    Serial.println(" m/s (");
     
   }else{
     Serial.println("Falha ao ler dados do sensor.");
